@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClockCalc", "ClockCalc\ClockCalc.csproj", "{8D901002-1A1B-4CF9-B19F-224F43A26A74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibClockCalc", "LibClockCalc\LibClockCalc.csproj", "{342DA6AA-9E98-4FA4-82E8-C28063D3139D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibClockCalcTesting", "LibClockCalcTesting\LibClockCalcTesting.csproj", "{1F20E41B-D223-4E02-92E3-9731E26614C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8D901002-1A1B-4CF9-B19F-224F43A26A74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D901002-1A1B-4CF9-B19F-224F43A26A74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D901002-1A1B-4CF9-B19F-224F43A26A74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D901002-1A1B-4CF9-B19F-224F43A26A74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{342DA6AA-9E98-4FA4-82E8-C28063D3139D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{342DA6AA-9E98-4FA4-82E8-C28063D3139D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{342DA6AA-9E98-4FA4-82E8-C28063D3139D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{342DA6AA-9E98-4FA4-82E8-C28063D3139D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F20E41B-D223-4E02-92E3-9731E26614C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F20E41B-D223-4E02-92E3-9731E26614C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F20E41B-D223-4E02-92E3-9731E26614C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F20E41B-D223-4E02-92E3-9731E26614C7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
