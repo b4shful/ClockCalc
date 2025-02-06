@@ -12,7 +12,7 @@
         // STM32H7 Typical Input Clocks
         private static readonly double[] PossibleHSE_HSI = { 8_000_000, 16_000_000, 25_000_000 }; // HSE/HSI options
 
-        // PLL N (Multiplier) Values: Assume typical values
+        // PLL N (Multiplier) Values
         private static readonly int[] PLLN = Enumerable.Range(50, 201).ToArray(); // 50 to 250
 
         // PLL Dividers
@@ -20,12 +20,14 @@
         private static readonly int[] PLLP = { 2, 4, 6, 8, 10, 12 }; // PLL2_P output dividers
         private static readonly int[] PLLR = { 2, 4, 6, 8 }; // PLL3_R output dividers
 
-        // ADC Prescalers
-        private static readonly int[] ADC_Prescalers = { 1, 2, 4, 6, 8, 10, 12, 16, 32, 64, 128, 256 };
+        // ADC Prescalers (before the MUX)
+        private static readonly int[] ADC_ker_ck_Prescalers = { 1, 2, 4, 6, 8, 10, 12, 16, 32, 64, 128, 256 };
+        private static readonly int[] ADC_sclk_Prescalers = { 1, 2, 4 }; // Separate path
 
         /// <summary>
         /// Generates all valid Fadc_ker_ck values based on STM32H7 PLL settings.
         /// The CubeMX value (Fadc_ker_ck) is AFTER the fixed /2 block.
+        /// ADC prescalers are applied BEFORE the MUX.
         /// </summary>
         /// <returns>List of valid ADC clock frequencies (Hz)</returns>
         public static double[] GenerateValidADCClocks()
@@ -44,24 +46,46 @@
                         foreach (int p in PLLP) // PLL2_P output
                         {
                             double pll2_p_freq = vco / p;
-                            if (pll2_p_freq <= 160_000_000) validClocks.Add(pll2_p_freq);
+                            if (pll2_p_freq <= 160_000_000)
+                            {
+                                // Apply ADC_KER_CK prescalers (before the MUX)
+                                foreach (int prescaler in ADC_ker_ck_Prescalers)
+                                {
+                                    double adc_ker_ck_input = pll2_p_freq / prescaler;
+                                    if (adc_ker_ck_input <= 160_000_000)
+                                    {
+                                        validClocks.Add(adc_ker_ck_input * 2); // MUX doubles the frequency
+                                    }
+                                }
+                            }
                         }
 
                         foreach (int r in PLLR) // PLL3_R output
                         {
                             double pll3_r_freq = vco / r;
-                            if (pll3_r_freq <= 160_000_000) validClocks.Add(pll3_r_freq);
+                            if (pll3_r_freq <= 160_000_000)
+                            {
+                                // Apply ADC_KER_CK prescalers (before the MUX)
+                                foreach (int prescaler in ADC_ker_ck_Prescalers)
+                                {
+                                    double adc_ker_ck_input = pll3_r_freq / prescaler;
+                                    if (adc_ker_ck_input <= 160_000_000)
+                                    {
+                                        validClocks.Add(adc_ker_ck_input * 2); // MUX doubles the frequency
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
 
-            // Apply the fixed /2 divider to get Fadc_ker_ck (CubeMX value)
+            // Apply fixed /2 divider to get Fadc_ker_ck (CubeMX value)
             HashSet<double> finalADCClocks = new();
             foreach (double clock in validClocks)
             {
                 double cubeMXFreq = clock / 2; // Apply the /2 block
-                if (cubeMXFreq <= 80_000_000 && cubeMXFreq >= 1_000_000) // Enforce CubeMX constraints
+                if (cubeMXFreq <= 80_000_000 && cubeMXFreq >= 1_666_667) // Enforce CubeMX constraints
                     finalADCClocks.Add(cubeMXFreq);
             }
 
